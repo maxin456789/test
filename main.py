@@ -1,30 +1,21 @@
-from string import ascii_letters as alpha
+from controller import Controller
+from view import ConsoleView
+from model import ManagerFile, Phonebook, Contact, NotFoundFile
+from pathlib import Path
+import csv
+from datetime import datetime
+import re
+import os
 
-alpha_tuple = tuple(alpha)
+file_path: Path = Path(u'phonebook.csv')
 
-def caesar_cipher(data, key):
-    try:
-        output = ''
-        for letters in data:
-            if letters in alpha_tuple:
-                offset = alpha_tuple.index(letters) + key
-                if offset >= len(alpha_tuple):
-                    offset = offset - len(alpha_tuple)
-                output = output + alpha_tuple[offset]
-            else:
-                output = output + letters
-        return output
-    except:
-        print('бля')
+if not os.path.exists(file_path):
+    raise NotFoundFile(file_path)
 
 
-
-if __name__ == '__main__':
-    text = input('Введите текст')
-    key = input('Введите ключ')
-    data = list(text)
-    key = int(key)
-    out = caesar_cipher(data, key)
-    print(out)
-
-
+manager_file = ManagerFile(file_path)
+phonebook = Phonebook()
+console_view = ConsoleView()
+contact = Contact()
+controller = Controller(phonebook, contact, console_view, manager_file)
+controller.run()

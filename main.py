@@ -2,9 +2,6 @@ from controller import Controller
 from view import ConsoleView
 from model import ManagerFile, Phonebook, Contact, NotFoundFile
 from pathlib import Path
-import csv
-from datetime import datetime
-import re
 import os
 
 file_path: Path = Path(u'phonebook.csv')

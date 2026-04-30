@@ -1,6 +1,3 @@
-import view
-
-
 class Controller:
     def __init__(self, phonebook, contact, console, m_file):
         self.phonebook = phonebook

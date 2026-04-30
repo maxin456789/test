@@ -77,7 +77,7 @@ def test_add_contact():
     with patch.object(Contact, 'set_contact_by_user', return_value=fake_contact):
         pb.create_contact()
 
-    assert '1' in pb.dict_phonebook.keys() #запись есть
+    assert '1' in pb.dict_phonebook.keys() #проверка на наличие записи
     assert pb.dict_phonebook['1'] == {
         'name': 'Иван',
         'surname': 'Иванов',
@@ -91,7 +91,7 @@ def test_add_contact():
 def test_edit_contact_not_found(capsys):
     """тест для не найденного id"""
     pb = Phonebook()
-    pb.dict_phonebook = {'123': 'data'}  # существует только id 123
+    pb.dict_phonebook = {'123': 'data'}  # существует  id 123
     with patch('builtins.input', return_value='999'):  # вводим несуществующий id
         pb.edit_contact()
     captured = capsys.readouterr()
@@ -156,6 +156,7 @@ def test_search_contact(capsys, search_text, expected_output):
             'date': '01.01.2026'
         }
     }
+    #Проверка выводимых данных
     with patch('builtins.input', return_value=search_text):
         pb.search_contact()
     captured = capsys.readouterr()
@@ -189,13 +190,13 @@ def test_write_read_file():
     result = mf.write_file(content)
     assert result == 'Успех'
 
-    # Проверяем загруженный с помощью ManagerFile.read_file() словарь
+    # Проверяем  словарь
     result = mf.read_file()
     #  Проверяем наличие записей
     assert '1' in result.keys()
     assert '2' in result.keys()
 
-    # Проверяем, что данные для id=1 совпадают
+    # Проверяем данные
     assert result['1'] == {
         'name': 'Олег',
         'surname': 'Петров',
@@ -205,15 +206,14 @@ def test_write_read_file():
         'date': '01.01.2026'
     }
 
-    # Проверяем, что self.output_dict тоже заполнился
+    # Проверка словаря
     assert mf.output_dict == result
 
 
 def test_file_not_found_exception(capsys):
+    """Проверка ошибки NotFoundFile"""
     file_path = 'no_file.csv'
     with pytest.raises(NotFoundFile) as exc_info:
-        # Здесь вызываешь функцию/код, который должен выбросить исключение
         if not os.path.exists(file_path):
             raise NotFoundFile(file_path)
-    # Проверяем сообщение (если нужно)
     assert str(exc_info.value) == f"Файл '{file_path}' не найден в указанной директории."
